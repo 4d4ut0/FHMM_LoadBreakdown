@@ -1,0 +1,266 @@
+
+1. Inicializaçar o ESP32 enquanto o roteador é desligado
+2. Iniciar o roteador
+
+$ make monitor
+Toolchain path: /home/adaut/_TOOLS/esp32/xtensa-esp32-elf/bin/xtensa-esp32-elf-gcc
+Toolchain version: crosstool-ng-1.22.0-80-g6c4433a
+Compiler version: 5.2.0
+Python requirements from /home/adaut/_TOOLS/esp32/esp-idf/requirements.txt are satisfied.
+MONITOR
+--- idf_monitor on /dev/ttyUSB0 115200 ---
+--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
+ets Jun  8 2016 00:22:57
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0018,len:4
+load:0x3fff001c,len:8248
+load:0x40078000,len:10916
+load:0x40080400,len:7048
+entry 0x400807a4
+D (71) bootloader_flash: mmu set block paddr=0x00000000 (was 0xffffffff)
+I (34) boot: ESP-IDF v3.2.2-42-g4a9f33944 2nd stage bootloader
+I (34) boot: compile time 18:27:10
+D (34) boot: Enabling RTCWDT(9000 ms)
+I (38) boot: Enabling RNG early entropy source...
+D (44) boot: magic e9
+D (46) boot: segments 04
+D (49) boot: spi_mode 02
+D (51) boot: spi_speed 00
+D (54) boot: spi_size 02
+I (57) boot: SPI Speed      : 40MHz
+I (61) boot: SPI Mode       : DIO
+I (65) boot: SPI Flash Size : 4MB
+D (69) bootloader_flash: mmu set paddr=00000000 count=1 size=c00 src_addr=8000 src_addr_aligned=0
+D (78) boot: mapped partition table 0x8000 at 0x3f408000
+D (83) flash_parts: partition table verified, 6 entries
+I (88) boot: Partition Table:
+I (92) boot: ## Label            Usage          Type ST Offset   Length
+D (99) boot: load partition table entry 0x3f408000
+D (104) boot: type=1 subtype=2
+I (107) boot:  0 nvs              WiFi data        01 02 00009000 00005000
+D (115) boot: load partition table entry 0x3f408020
+D (120) boot: type=1 subtype=0
+I (123) boot:  1 otadata          OTA data         01 00 0000e000 00002000
+D (131) boot: load partition table entry 0x3f408040
+D (135) boot: type=0 subtype=10
+I (139) boot:  2 app0             OTA app          00 10 00010000 00140000
+D (146) boot: load partition table entry 0x3f408060
+D (151) boot: type=0 subtype=11
+I (154) boot:  3 app1             OTA app          00 11 00150000 00140000
+D (162) boot: load partition table entry 0x3f408080
+D (167) boot: type=1 subtype=82
+I (170) boot:  4 spiffs           Unknown data     01 82 00290000 00170000
+I (178) boot: End of partition table
+D (182) boot: OTA data offset 0xe000
+D (186) bootloader_flash: mmu set paddr=00000000 count=1 size=2000 src_addr=e000 src_addr_aligned=0
+D (195) boot: OTA sequence values A 0xffffffff B 0xffffffff
+D (200) boot: OTA sequence numbers both empty (all-0xFF) or partition table does not have bootable ota_apps (app_count=2)
+I (211) boot: No factory image, trying OTA 0
+D (216) boot: Trying partition index 0 offs 0x10000 size 0x140000
+D (222) esp_image: reading image header @ 0x10000
+D (227) bootloader_flash: mmu set block paddr=0x00010000 (was 0xffffffff)
+D (234) esp_image: image header: 0xe9 0x06 0x02 0x02 40081254
+I (240) esp_image: segment 0: paddr=0x00010020 vaddr=0x3f400020 size=0x23138 (143672) map
+D (249) bootloader_flash: mmu set paddr=00010000 count=3 size=23138 src_addr=10020 src_addr_aligned=10000
+D (309) bootloader_flash: mmu set block paddr=0x00030000 (was 0xffffffff)
+I (309) esp_image: segment 1: paddr=0x00033160 vaddr=0x3ffb0000 size=0x03170 ( 12656) load
+D (313) bootloader_flash: mmu set paddr=00030000 count=1 size=3170 src_addr=33160 src_addr_aligned=30000
+D (328) bootloader_flash: mmu set block paddr=0x00030000 (was 0xffffffff)
+I (330) esp_image: segment 2: paddr=0x000362d8 vaddr=0x40080000 size=0x00400 (  1024) load
+0x40080000: _WindowOverflow4 at /home/adaut/_TOOLS/esp32/esp-idf/components/freertos/xtensa_vectors.S:1779
+
+D (339) bootloader_flash: mmu set paddr=00030000 count=1 size=400 src_addr=362d8 src_addr_aligned=30000
+D (349) bootloader_flash: mmu set block paddr=0x00030000 (was 0xffffffff)
+I (355) esp_image: segment 3: paddr=0x000366e0 vaddr=0x40080400 size=0x09930 ( 39216) load
+D (364) bootloader_flash: mmu set paddr=00030000 count=2 size=9930 src_addr=366e0 src_addr_aligned=30000
+D (390) bootloader_flash: mmu set block paddr=0x00040000 (was 0xffffffff)
+I (390) esp_image: segment 4: paddr=0x00040018 vaddr=0x400d0018 size=0x6cce4 (445668) map
+0x400d0018: _flash_cache_start at ??:?
+
+D (394) bootloader_flash: mmu set paddr=00040000 count=7 size=6cce4 src_addr=40018 src_addr_aligned=40000
+D (560) bootloader_flash: mmu set block paddr=0x000a0000 (was 0xffffffff)
+I (560) esp_image: segment 5: paddr=0x000acd04 vaddr=0x40089d30 size=0x09f54 ( 40788) load
+0x40089d30: prvInitialiseTaskLists at /home/adaut/_TOOLS/esp32/esp-idf/components/freertos/tasks.c:3508
+
+D (565) bootloader_flash: mmu set paddr=000a0000 count=2 size=9f54 src_addr=acd04 src_addr_aligned=a0000
+D (591) bootloader_flash: mmu set block paddr=0x000b0000 (was 0xffffffff)
+D (592) esp_image: Calculated hash: 13a427151522d910b1582fb007b0cd9ec3cbca21fce854a20e401c483abf24c9
+D (596) bootloader_flash: mmu set paddr=000b0000 count=1 size=20 src_addr=b6c60 src_addr_aligned=b0000
+D (606) bootloader_flash: mmu set paddr=000b0000 count=1 size=20 src_addr=b6c60 src_addr_aligned=b0000
+I (626) boot: Loaded app from partition at offset 0x10000
+I (626) boot: Disabling RNG early entropy source...
+D (629) boot: Mapping segment 0 as DROM
+D (633) boot: Mapping segment 4 as IROM
+D (637) boot: calling set_cache_and_start_app
+D (641) boot: configure drom and irom and start
+D (646) boot: start: 0x40081254
+0x40081254: call_start_cpu0 at /home/adaut/_TOOLS/esp32/esp-idf/components/esp32/cpu_start.c:120
+
+I (649) cpu_start: Pro cpu up.
+I (653) cpu_start: Starting app cpu, entry point is 0x40081200
+0x40081200: call_start_cpu1 at /home/adaut/_TOOLS/esp32/esp-idf/components/esp32/cpu_start.c:246
+
+I (0) cpu_start: App cpu up.
+I (663) heap_init: Initializing. RAM available for dynamic allocation:
+I (670) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (677) heap_init: At 3FFB8E48 len 000271B8 (156 KiB): DRAM
+I (682) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (688) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (696) heap_init: At 40093C84 len 0000C37C (48 KiB): IRAM
+I (701) cpu_start: Pro cpu start user code
+I (49) cpu_start: Starting scheduler on PRO CPU.
+I (0) cpu_start: Starting scheduler on APP CPU.
+Reconnecting WiFiConnecting to WiFi ...
+I (10056) wifi: wifi driver task: 3ffc3a48, prio:23, stack:3584, core=0
+I (10057) system_api: Base MAC address is not set, read default base MAC address from BLK0 of EFUSE
+I (10062) system_api: Base MAC address is not set, read default base MAC address from BLK0 of EFUSE
+I (10139) wifi: wifi firmware version: 0c3a77a
+I (10140) wifi: config NVS flash: enabled
+I (10140) wifi: config nano formating: disabled
+I (10141) wifi: Init dynamic tx buffer num: 32
+I (10145) wifi: Init data frame dynamic rx buffer num: 32
+I (10150) wifi: Init management frame dynamic rx buffer num: 32
+I (10156) wifi: Init management short buffer num: 32
+I (10161) wifi: Init static rx buffer size: 1600
+I (10165) wifi: Init static rx buffer num: 10
+I (10169) wifi: Init dynamic rx buffer num: 32
+I (10244) phy: phy_version: 4008, 544f89f, Jan 24 2019, 14:54:06, 0, 0
+I (10245) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+I (10247) wifi: Total power save buffer number: 16
+I (10251) wifi: Init max length of beacon: 752/752
+I (10256) wifi: Init max length of beacon: 752/752
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (12712) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (12715) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+Reconnecting WiFiConnecting to WiFi ...
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (17501) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (17504) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (19956) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (19959) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+Reconnecting WiFiConnecting to WiFi ...
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (22501) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (22504) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (24957) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (24959) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+Reconnecting WiFiConnecting to WiFi ...
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (27503) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (27506) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (29959) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (29962) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+Reconnecting WiFiConnecting to WiFi ...
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (32503) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (32506) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (34959) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (34961) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+Reconnecting WiFiConnecting to WiFi ...
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (37505) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (37508) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (39962) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (39965) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+Reconnecting WiFiConnecting to WiFi ...
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (42506) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (42509) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (44963) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (44965) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+Reconnecting WiFiConnecting to WiFi ...
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (47506) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (47509) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (49962) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (49964) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+Reconnecting WiFiConnecting to WiFi ...
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (52508) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (52511) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (54964) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (54967) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+Reconnecting WiFiConnecting to WiFi ...
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (57511) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (57514) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 201 - NO_AP_FOUND
+I (59966) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (59969) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+Reconnecting WiFiConnecting to WiFi ...
+I (62507) wifi: n:13 2, o:13 0, ap:13 2, sta:13 0, prof:13
+I (62509) wifi: state: init -> auth (b0)
+I (63510) wifi: state: auth -> init (200)
+I (63511) wifi: n:13 0, o:13 2, ap:13 2, sta:13 0, prof:13
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 2 - AUTH_EXPIRE
+I (63516) wifi: mode : softAP (cc:50:e3:9c:4d:39)
+I (63522) wifi: mode : sta (cc:50:e3:9c:4d:38) + softAP (cc:50:e3:9c:4d:39)
+I (63889) wifi: n:13 2, o:13 0, ap:13 2, sta:13 0, prof:13
+I (63891) wifi: state: init -> auth (b0)
+I (63896) wifi: state: auth -> assoc (0)
+I (63901) wifi: state: assoc -> run (10)
+I (63922) wifi: connected with defekt, channel 13, HT20
+I (63928) wifi: pm start, type: 1
+
+Reconnecting WiFiI (65063) wifi: state: run -> init (0)
+I (65064) wifi: pm stop, total sleep time: 941529 us / 1135953 us
+
+I (65064) wifi: n:13 0, o:13 2, ap:13 2, sta:13 0, prof:13
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 8 - ASSOC_LEAVE
+Connecting to WiFi ...
+I (65438) wifi: n:13 2, o:13 0, ap:13 2, sta:13 0, prof:13
+I (65440) wifi: state: init -> auth (b0)
+I (65443) wifi: state: auth -> assoc (0)
+I (65448) wifi: state: assoc -> run (10)
+I (65464) wifi: connected with defekt, channel 13, HT20
+I (65469) wifi: pm start, type: 1
+
+dhcps: send_nak>>udp_sendto result 0
+Reconnecting WiFiI (70064) wifi: state: run -> init (0)
+I (70065) wifi: pm stop, total sleep time: 4188284 us / 4595289 us
+
+I (70065) wifi: n:13 0, o:13 2, ap:13 2, sta:13 0, prof:13
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 8 - ASSOC_LEAVE
+Connecting to WiFi ...
+I (70439) wifi: n:13 2, o:13 0, ap:13 2, sta:13 0, prof:13
+I (70441) wifi: state: init -> auth (b0)
+I (70853) wifi: state: auth -> assoc (0)
+I (70858) wifi: state: assoc -> run (10)
+I (70878) wifi: connected with defekt, channel 13, HT20
+I (70939) wifi: pm start, type: 1
+
+Reconnecting WiFiI (75065) wifi: state: run -> init (0)
+I (75066) wifi: pm stop, total sleep time: 3530671 us / 4126801 us
+
+I (75066) wifi: n:13 0, o:13 2, ap:13 2, sta:13 0, prof:13
+[W][WiFiGeneric.cpp:351] _eventCallback(): Reason: 8 - ASSOC_LEAVE
+Connecting to WiFi ...
+I (75440) wifi: n:13 2, o:13 0, ap:13 2, sta:13 0, prof:13
+I (75442) wifi: state: init -> auth (b0)
+I (75446) wifi: state: auth -> assoc (0)
+I (75450) wifi: state: assoc -> run (10)
+I (75479) wifi: connected with defekt, channel 13, HT20
+I (75485) wifi: pm start, type: 1
+
+I (76139) event: sta ip: 10.0.0.202, mask: 255.255.255.0, gw: 10.0.0.254
+WiFi Connected. Doing work!
+WiFi Connected. Doing work!
+dhcps: send_nak>>udp_sendto result 0
+WiFi Connected. Doing work!
+WiFi Connected. Doing work!
+WiFi Connected. Doing work!
+WiFi Connected. Doing work!
+WiFi Connected. Doing work!
+WiFi Connected. Doing work!

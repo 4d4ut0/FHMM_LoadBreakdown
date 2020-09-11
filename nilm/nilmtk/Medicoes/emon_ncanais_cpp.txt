@@ -1,0 +1,549 @@
+/*
+  Emon.cpp - Library for openenergymonitor
+  Created by Trystan Lea, April 27 2010
+  GNU GPL
+  modified to use up to 12 bits ADC resolution (ex. Arduino Due)
+  by boredman@boredomprojects.net 26.12.2013
+  Low Pass filter for offset removal replaces HP filter 1/1/2015 - RW
+*/
+
+// Proboscide99 10/08/2016 - Added ADMUX settings for ATmega1284 e 1284P (644 / 644P also, but not tested) in readVcc function
+
+//#include "WProgram.h" un-comment for use on older versions of Arduino IDE
+#include "EmonLib.h"
+
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "Arduino.h"
+#else
+#include "WProgram.h"
+#endif
+
+
+//--------------------------------------------------------------------------------------
+// Sets the pins to be used for voltage and current sensors
+//--------------------------------------------------------------------------------------
+void EnergyMonitor::voltage(unsigned int _inPinV, double _VCAL, double _PHASECAL)
+{
+  inPinV = _inPinV;
+  VCAL = _VCAL;
+  PHASECAL = _PHASECAL;
+  offsetV = ADC_COUNTS>>1;
+}
+
+//void EnergyMonitor::Offset_voltage(unsigned int _inPinOffsetV)
+//{
+ // inPinV = _inPinOffsetV;
+  //VCAL = _VCAL;
+  //PHASECAL = _PHASECAL;
+  //offsetV = ADC_COUNTS>>1;
+//}
+
+void EnergyMonitor::currentIT(unsigned int _inPinIT, double _ICAL)
+{
+  inPinIT = _inPinIT;
+  ICAL = _ICAL;
+  offsetI = ADC_COUNTS>>1;
+}
+
+
+
+
+//--------------------------------------------------------------------------------------
+// Sets the pins to be used for voltage and current sensors based on emontx pin map
+//--------------------------------------------------------------------------------------
+void EnergyMonitor::voltageTX(double _VCAL, double _PHASECAL)
+{
+  inPinV = 2;
+  VCAL = _VCAL;
+  PHASECAL = _PHASECAL;
+  offsetV = ADC_COUNTS>>1;
+}
+
+void EnergyMonitor::currentTXT(unsigned int _inPinIT,double _ICAL)
+{
+  inPinIT = 0;
+  ICAL = _ICAL;
+  offsetI = ADC_COUNTS>>1;
+  
+}
+
+
+void EnergyMonitor::currentTXI1(unsigned int _inPinI1, double _ICAL)
+{
+  inPinI1 = 1;
+  ICAL1 = _ICAL;
+  offsetI1 = ADC_COUNTS>>1;
+  
+}
+
+
+void EnergyMonitor::currentTXI2(unsigned int _inPinI2, double _ICAL)
+{
+  inPinI2 = 3;
+  ICAL2 = _ICAL;
+  offsetI2 = ADC_COUNTS>>1;
+  
+}
+
+
+void EnergyMonitor::currentTXI3(unsigned int _inPinI3, double _ICAL)
+{
+  inPinI3 = 4;
+  ICAL3 = _ICAL;
+  offsetI3 = ADC_COUNTS>>1;
+  
+}
+
+
+
+
+/*
+void EnergyMonitor::currentTX(unsigned int _channel, double _ICAL)
+{
+  if (_channel == 1) inPinIT = 3;
+  if (_channel == 2) inPinIT = 0;
+  if (_channel == 3) inPinIT = 1;
+  ICAL = _ICAL;
+  offsetI = ADC_COUNTS>>1;
+}
+*/
+
+
+
+//--------------------------------------------------------------------------------------
+// emon_calc procedure
+// Calculates realPower,apparentPower,powerFactor,Vrms,Irms,kWh increment
+// From a sample window of the mains AC voltage and current.
+// The Sample window length is defined by the number of half wavelengths or crossings we choose to measure.
+//--------------------------------------------------------------------------------------
+void EnergyMonitor::calcVI(unsigned int crossings, unsigned int timeout)
+{
+  #if defined emonTxV3
+  int SupplyVoltage=3300;
+  #else
+  int SupplyVoltage = readVcc();
+  #endif
+
+  unsigned int crossCount = 0;                             //Used to measure number of times threshold is crossed.
+  unsigned int numberOfSamples = 0;                        //This is now incremented
+
+  //-------------------------------------------------------------------------------------------------------------------------
+  // 1) Waits for the waveform to be close to 'zero' (mid-scale adc) part in sin curve.
+  //-------------------------------------------------------------------------------------------------------------------------
+  boolean st=false;                                  //an indicator to exit the while loop
+
+  unsigned long start = millis();    //millis()-start makes sure it doesnt get stuck in the loop if there is an error.
+
+  while(st==false)                                   //the while loop...
+  {
+    startV = analogRead(inPinV);                    //using the voltage waveform
+    if ((startV < (ADC_COUNTS*0.55)) && (startV > (ADC_COUNTS*0.45))) st=true;  //check its within range
+    if ((millis()-start)>timeout) st = true;
+  }
+
+  //-------------------------------------------------------------------------------------------------------------------------
+  // 2) Main measurement loop
+  //-------------------------------------------------------------------------------------------------------------------------
+  start = millis();
+
+  while ((crossCount < crossings) && ((millis()-start)<timeout))
+  {
+    numberOfSamples++;                       //Count number of times looped.
+    lastFilteredV = filteredV;               //Used for delay/phase compensation
+
+    //-----------------------------------------------------------------------------
+    // A) Read in raw voltage and current samples
+    //-----------------------------------------------------------------------------
+    sampleV = analogRead(inPinV);                 //Read in raw voltage signal
+    sampleIT = analogRead(inPinIT);                 //Read in raw current signal
+    sampleI1 = analogRead(inPinI1);                 //Read in raw current signal
+    sampleI2 = analogRead(inPinI2);                 //Read in raw current signal
+    sampleI3 = analogRead(inPinI3);                 //Read in raw current signal
+
+    //sampleOffsetV = analogRead(inPinOffsetV);  	  //Read in raw offset voltage signal
+
+    //-----------------------------------------------------------------------------
+    // B) Apply digital low pass filters to extract the 2.5 V or 1.65 V dc offset,
+    //     then subtract this - signal is now centred on 0 counts.
+    //-----------------------------------------------------------------------------
+    offsetV = offsetV + ((sampleV-offsetV)/1024);
+    
+   // Serial.print("AMOSTRA_tensao1:");
+   // Serial.println(sampleV);
+    
+	//Serial.print("offset_tensao1:");
+   // Serial.println(offsetV);
+    
+    filteredV = sampleV - offsetV;
+    offsetI = offsetI + ((sampleIT-offsetI)/1024);
+    offsetI1 = offsetI1 + ((sampleI1-offsetI1)/1024);
+    offsetI2 = offsetI2 + ((sampleI2-offsetI2)/1024);
+    offsetI3 = offsetI3 + ((sampleI3-offsetI3)/1024);
+    
+    //Serial.print("AMOSTRA_CORRENTE1:");
+    //Serial.println(sampleIT);
+    
+	//Serial.print("offset_corrente1:");
+   //Serial.println(offsetI);
+    
+	filteredI = sampleIT - offsetI;
+	filteredI1 = sampleI1 - offsetI1;
+	filteredI2 = sampleI2 - offsetI2;
+	filteredI3 = sampleI3 - offsetI3;
+
+    //-----------------------------------------------------------------------------
+    // C) Root-mean-square method voltage
+    //-----------------------------------------------------------------------------
+    sqV= filteredV * filteredV;                 //1) square voltage values
+    sumV += sqV;                                //2) sum
+
+    //-----------------------------------------------------------------------------
+    // D) Root-mean-square method current
+    //-----------------------------------------------------------------------------
+    sqI = filteredI * filteredI;                //1) square current values
+    sumI += sqI;                                //2) sum
+    
+    sqI1 = filteredI1 * filteredI1;                //1) square current values
+    sumI1 += sqI1;                                //2) sum
+    
+    sqI2 = filteredI2 * filteredI2;                //1) square current values
+    sumI2 += sqI2;                                //2) sum
+    
+    sqI3 = filteredI3 * filteredI3;                //1) square current values
+    sumI3 += sqI3;                                //2) sum
+    
+
+    //-----------------------------------------------------------------------------
+    // E) Phase calibration
+    //-----------------------------------------------------------------------------
+    phaseShiftedV = (lastFilteredV + PHASECAL * (filteredV - lastFilteredV)-45);
+    //Serial.print("Phase Shift:");
+    //Serial.println(phaseShiftedV);
+
+    //-----------------------------------------------------------------------------
+    // F) Instantaneous power calc
+    //-----------------------------------------------------------------------------
+    instP = (phaseShiftedV) * filteredI;          //Instantaneous Power
+    sumP +=instP;                               //Sum
+    
+    instP1 = (phaseShiftedV) * filteredI1;          //Instantaneous Power
+    sumP1 +=instP1;                               //Sum
+    
+    instP2 = (phaseShiftedV) * filteredI2;          //Instantaneous Power
+    sumP2 +=instP2;                               //Sum
+    
+    instP3 = (phaseShiftedV) * filteredI3;          //Instantaneous Power
+    sumP3 +=instP3;                               //Sum
+
+    //-----------------------------------------------------------------------------
+    // G) Find the number of times the voltage has crossed the initial voltage
+    //    - every 2 crosses we will have sampled 1 wavelength
+    //    - so this method allows us to sample an integer number of half wavelengths which increases accuracy
+    //-----------------------------------------------------------------------------
+    lastVCross = checkVCross;
+    if (sampleV > startV) checkVCross = true;
+                     else checkVCross = false;
+    if (numberOfSamples==1) lastVCross = checkVCross;
+
+    if (lastVCross != checkVCross) crossCount++;
+  }
+
+  //-------------------------------------------------------------------------------------------------------------------------
+  // 3) Post loop calculations
+  //-------------------------------------------------------------------------------------------------------------------------
+  //Calculation of the root of the mean of the voltage and current squared (rms)
+  //Calibration coefficients applied.
+
+  double V_RATIO = VCAL *((SupplyVoltage/1000.0) / (ADC_COUNTS));
+  Vrms = V_RATIO * sqrt(sumV / numberOfSamples);
+  
+  double I_RATIO = ICAL *((SupplyVoltage/1000.0) / (ADC_COUNTS));
+  Irms = I_RATIO * sqrt(sumI / numberOfSamples);
+
+  double I_RATIO1 = ICAL1 *((SupplyVoltage/1000.0) / (ADC_COUNTS));
+  Irms1 = I_RATIO1 * sqrt(sumI1 / numberOfSamples);
+  
+  double I_RATIO2 = ICAL2 *((SupplyVoltage/1000.0) / (ADC_COUNTS));
+  Irms2 = I_RATIO2 * sqrt(sumI2 / numberOfSamples);
+  
+  double I_RATIO3 = ICAL3 *((SupplyVoltage/1000.0) / (ADC_COUNTS));
+  Irms3 = I_RATIO3 * sqrt(sumI3 / numberOfSamples);
+  
+  //Calculation power values
+  realPower =  V_RATIO * I_RATIO * sumP / numberOfSamples;
+  realPower1 =  V_RATIO * I_RATIO1 * sumP1 / numberOfSamples;
+  realPower2 =  V_RATIO * I_RATIO2 * sumP2 / numberOfSamples;
+  realPower3 =  V_RATIO * I_RATIO3 * sumP3 / numberOfSamples;
+  
+  apparentPower = Vrms * Irms;
+  apparentPower1 = Vrms * Irms1;
+  apparentPower2 = Vrms * Irms2;
+  apparentPower3 = Vrms * Irms3;
+  
+  powerFactor=realPower / apparentPower;
+  powerFactor1=realPower1 / apparentPower1;
+  powerFactor2=realPower2 / apparentPower2;
+  powerFactor3=realPower3 / apparentPower3;
+  
+  PotReativa = sqrt((apparentPower*apparentPower)-(realPower*realPower));
+  PotReativa1 = sqrt((apparentPower1*apparentPower1)-(realPower1*realPower1));
+  PotReativa2 = sqrt((apparentPower2*apparentPower2)-(realPower2*realPower2));
+  PotReativa3 = sqrt((apparentPower3*apparentPower3)-(realPower3*realPower3));
+  
+  /*
+  if(powerFactor >= 1) powerFactor=1; 
+   if(realPower >= apparentPower) realPower = apparentPower*powerFactor;
+  
+  PotReativa = sqrt((apparentPower*apparentPower)-(realPower*realPower));
+  if(PotReativa <= 7) PotReativa=0;
+   
+   */
+
+  //Reset accumulators
+  sumV = 0;
+  sumI = 0;
+  sumP = 0;
+//--------------------------------------------------------------------------------------
+}
+
+//--------------------------------------------------------------------------------------
+double EnergyMonitor::calcIrms(unsigned int Number_of_Samples)
+{
+
+  #if defined emonTxV3
+    int SupplyVoltage=3300;
+  #else
+    int SupplyVoltage = readVcc();
+  #endif
+
+
+  for (unsigned int n = 0; n < Number_of_Samples; n++)
+  {
+    sampleIT = analogRead(inPinIT);
+
+    // Digital low pass filter extracts the 2.5 V or 1.65 V dc offset,
+    //  then subtract this - signal is now centered on 0 counts.
+    offsetI = (offsetI + (sampleIT-offsetI)/1024);
+    //Serial.print("offset_corrente2:");
+    //Serial.println(offsetI);
+    filteredI = sampleIT - offsetI;
+
+    // Root-mean-square method current
+    // 1) square current values
+    sqI = filteredI * filteredI;
+    // 2) sum
+    sumI += sqI;
+  }
+
+  double I_RATIO = ICAL *((SupplyVoltage/1000.0) / (ADC_COUNTS));
+  Irms = I_RATIO * sqrt(sumI / Number_of_Samples);
+
+  //Reset accumulators
+  sumI = 0;
+  //--------------------------------------------------------------------------------------
+
+  return Irms;
+}
+
+
+///---------------------------------------------------------------------------------------
+double EnergyMonitor::calcIrms1(unsigned int Number_of_Samples)
+{
+
+  #if defined emonTxV3
+    int SupplyVoltage=3300;
+  #else
+    int SupplyVoltage = readVcc();
+  #endif
+
+
+  for (unsigned int n = 0; n < Number_of_Samples; n++)
+  {
+    sampleI1 = analogRead(inPinI1);
+
+    // Digital low pass filter extracts the 2.5 V or 1.65 V dc offset,
+    //  then subtract this - signal is now centered on 0 counts.
+    offsetI1 = (offsetI1 + (sampleI1-offsetI1)/1024);
+    filteredI1 = sampleI1 - offsetI1;
+
+    // Root-mean-square method current
+    // 1) square current values
+    sqI1 = filteredI1 * filteredI1;
+    // 2) sum
+    sumI1 += sqI1;
+  }
+
+  double I_RATIO1 = ICAL1 *((SupplyVoltage/1000.0) / (ADC_COUNTS));
+  Irms1 = I_RATIO1 * sqrt(sumI1 / Number_of_Samples);
+
+  //Reset accumulators
+  sumI1 = 0;
+  //--------------------------------------------------------------------------------------
+
+  return Irms1;
+}
+
+///---------------------------------------------------------------------------------------
+
+double EnergyMonitor::calcIrms2(unsigned int Number_of_Samples)
+{
+
+  #if defined emonTxV3
+    int SupplyVoltage=3300;
+  #else
+    int SupplyVoltage = readVcc();
+  #endif
+
+
+  for (unsigned int n = 0; n < Number_of_Samples; n++)
+  {
+    sampleI2 = analogRead(inPinI2);
+
+    // Digital low pass filter extracts the 2.5 V or 1.65 V dc offset,
+    //  then subtract this - signal is now centered on 0 counts.
+    offsetI2 = (offsetI2 + (sampleI2-offsetI2)/1024);
+    filteredI2 = sampleI2 - offsetI2;
+
+    // Root-mean-square method current
+    // 1) square current values
+    sqI2 = filteredI2 * filteredI2;
+    // 2) sum
+    sumI2 += sqI2;
+  }
+
+  double I_RATIO2 = ICAL2 *((SupplyVoltage/1000.0) / (ADC_COUNTS));
+  Irms2 = I_RATIO2 * sqrt(sumI2 / Number_of_Samples);
+
+  //Reset accumulators
+  sumI2 = 0;
+  //--------------------------------------------------------------------------------------
+
+  return Irms2;
+}
+
+///---------------------------------------------------------------------------------------
+
+double EnergyMonitor::calcIrms3(unsigned int Number_of_Samples)
+{
+
+  #if defined emonTxV3
+    int SupplyVoltage=3300;
+  #else
+    int SupplyVoltage = readVcc();
+  #endif
+
+
+  for (unsigned int n = 0; n < Number_of_Samples; n++)
+  {
+    sampleI3 = analogRead(inPinI3);
+
+    // Digital low pass filter extracts the 2.5 V or 1.65 V dc offset,
+    //  then subtract this - signal is now centered on 0 counts.
+    offsetI3 = (offsetI3 + (sampleI3-offsetI3)/1024);
+    filteredI3 = sampleI3 - offsetI3;
+
+    // Root-mean-square method current
+    // 1) square current values
+    sqI3 = filteredI3 * filteredI3;
+    // 2) sum
+    sumI3 += sqI3;
+  }
+
+  double I_RATIO3 = ICAL3 *((SupplyVoltage/1000.0) / (ADC_COUNTS));
+  Irms3 = I_RATIO3 * sqrt(sumI3 / Number_of_Samples);
+
+  //Reset accumulators
+  sumI3 = 0;
+  //--------------------------------------------------------------------------------------
+
+  return Irms3;
+}
+
+
+///---------------------------------------------------------------------------------------
+void EnergyMonitor::serialprint()
+{
+/*	if (realPower<10) 																			Serial.print("00000");
+	if (realPower<100 && realPower>10) 															Serial.print("0000");
+	if (realPower<1000 && realPower>10 && realPower>100) 										Serial.print("000");
+	if (realPower<10000 && realPower>10 && realPower>100 && realPower>1000 ) 					Serial.print("00");
+	if (realPower<100000 && realPower>10 && realPower>100 && realPower>1000 && realPower>10000) Serial.print("0");
+	Serial.print(realPower);
+	Serial.print(' ');*/
+	
+/*	if (realPower<10) 																			Serial.print("Menor que 10");
+	if (realPower<100 && realPower>10) 															Serial.print("Menor que 100");
+	if (realPower<1000 && realPower>10 && realPower>100) 										Serial.print("Menor que 1000");
+	if (realPower<10000 && realPower>10 && realPower>100 && realPower>1000 ) 					Serial.print("Menor que 10000");
+	if (realPower<100000 && realPower>10 && realPower>100 && realPower>1000 && realPower>10000) Serial.print("Menor que 100000");
+*/	
+/*
+	if (PotReativa<10) 																				Serial.print("00000");
+	if (PotReativa<100 && PotReativa>10) 															Serial.print("0000");
+	if (PotReativa<1000 && PotReativa>10 && PotReativa>100) 										Serial.print("000");
+	if (PotReativa<10000 && PotReativa>10 && PotReativa>100 && PotReativa>1000 ) 					Serial.print("00");
+	if (PotReativa<100000 && PotReativa>10 && PotReativa>100 && PotReativa>1000 && PotReativa>10000) Serial.print("0");
+	Serial.print(PotReativa);
+	Serial.println('p');*/
+	
+	
+		//Serial.print("  Tensao RMS: ");
+		//Serial.print(Vrms);
+		//Serial.print(" Corrente Irms ");
+		//Serial.print(Irms);
+		//Serial.print("  Pot Ativa: ");	
+		//Serial.print(realPower);
+		//Serial.print(' ');
+		//Serial.print("  Pot REAtiva: ");	
+		//Serial.print(PotReativa);
+		//Serial.println('p');
+		//Serial.print("  Pot Aparente: ");
+		//Serial.print(apparentPower);
+		//Serial.print(' ');
+		//Serial.print(" Fator de Pot: ");
+		//Serial.print(powerFactor);
+		//Serial.print("ADC_COUNTS");
+		//Serial.print(ADC_COUNTS);
+		//Serial.println("b");
+		//Serial.println(' ');
+ 
+  delay(100);
+}
+
+//thanks to http://hacking.majenko.co.uk/making-accurate-adc-readings-on-arduino
+//and JÃ©rÃ´me who alerted us to http://provideyourown.com/2012/secret-arduino-voltmeter-measure-battery-voltage/
+
+long EnergyMonitor::readVcc() {
+  long result;
+
+  //not used on emonTx V3 - as Vcc is always 3.3V - eliminates bandgap error and need for calibration http://harizanov.com/2013/09/thoughts-on-avr-adc-accuracy/
+
+  #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328__) || defined (__AVR_ATmega328P__)
+  ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+  #elif defined(__AVR_ATmega644__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__)
+  ADMUX = _BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+  #elif defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_AT90USB1286__)
+  ADMUX = _BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+  ADCSRB &= ~_BV(MUX5);   // Without this the function always returns -1 on the ATmega2560 http://openenergymonitor.org/emon/node/2253#comment-11432
+  #elif defined (__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
+  ADMUX = _BV(MUX5) | _BV(MUX0);
+  #elif defined (__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
+  ADMUX = _BV(MUX3) | _BV(MUX2);
+
+  #endif
+
+
+  #if defined(__AVR__)
+  delay(2);                                        // Wait for Vref to settle
+  ADCSRA |= _BV(ADSC);                             // Convert
+  while (bit_is_set(ADCSRA,ADSC));
+  result = ADCL;
+  result |= ADCH<<8;
+  result = READVCC_CALIBRATION_CONST / result;  //1100mV*1024 ADC steps http://openenergymonitor.org/emon/node/1186
+  return result;
+  #elif defined(__arm__)
+  return (3300);                                  //Arduino Due
+  #else
+  return (3300);                                  //Guess that other un-supported architectures will be running a 3.3V!
+  #endif
+}

@@ -1,0 +1,8 @@
+future
+six
+psycopg2-binary
+pandas
+networkx==2.1
+scipy
+tables
+hmmlearn

@@ -1,0 +1,24 @@
+{
+    "Header": {
+        "Comment": "All values are metric (mm)",
+        "CreationDate": "2020-01-23T20:46:16Z",
+        "GenerationSoftware": {
+            "Application": "EAGLE",
+            "Vendor": "Autodesk",
+            "Version": "9.5.2"
+        },
+        "Part": "Single"
+    },
+    "Overall": {
+        "BoardThickness": 1.57,
+        "LayerNumber": 2,
+        "Name": {
+            "ProjectId": "ac_monitor"
+        },
+        "Owner": "Leonardo Camara Cessel <leonardo.cessel@gmail.com>",
+        "Size": {
+            "X": 100,
+            "Y": 83.03
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "Header": {
+        "Comment": "All values are metric (mm)",
+        "CreationDate": "2020-01-31T15:06:33Z",
+        "GenerationSoftware": {
+            "Application": "EAGLE",
+            "Vendor": "Autodesk",
+            "Version": "9.5.2"
+        },
+        "Part": "Single"
+    },
+    "Overall": {
+        "BoardThickness": 1.57,
+        "LayerNumber": 2,
+        "Name": {
+            "ProjectId": "medidor_nao_invasivo"
+        },
+        "Owner": "Leonardo Camara Cessel <leonardo.cessel@gmail.com>",
+        "Size": {
+            "X": 81.5,
+            "Y": 84
+        }
+    }
+}

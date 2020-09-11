@@ -1,0 +1,66 @@
+#include <WiFi.h>
+
+void delayfor(long milliseconds);
+boolean reconnect();
+
+// Update these with values suitable for your network.
+const char* ssid = "**";
+const char* password = "***";
+
+void setup() {
+  Serial.begin(115200);
+}
+
+long lastReconnectAttempt = 0;
+
+void loop() {
+
+    if (!WiFi.isConnected()) {
+        long now = millis();
+    if (now - lastReconnectAttempt > 5000) {
+      lastReconnectAttempt = now;
+      // Attempt to reconnect
+      if (reconnect()) {
+        lastReconnectAttempt = 0;
+      }
+    }
+  } 
+else {
+    
+    // Do Work here
+    Serial.print("WiFi Connected. Doing work!");
+    delayfor(2000);
+
+  }
+
+}
+
+boolean reconnect() 
+{
+  if (!WiFi.isConnected())
+  {
+    Serial.print("Reconnecting WiFi ");
+    WiFi.disconnect(false);
+    Serial.println("Connecting to WiFi...");
+    WiFi.mode(WIFI_AP_STA);
+    WiFi.begin(ssid, password);
+    delayfor(250);
+    if ( WiFi.status() != WL_CONNECTED )
+    {
+        return false;
+    }
+    
+     Serial.println("Connected");
+  }
+}
+
+void delayfor(long milliseconds)
+{
+    long d;
+    d = millis();
+
+    while (millis()-d < milliseconds) {
+        
+        yield();
+    }
+}

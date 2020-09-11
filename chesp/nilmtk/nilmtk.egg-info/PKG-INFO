@@ -1,0 +1,17 @@
+Metadata-Version: 1.1
+Name: nilmtk
+Version: 0.2.1
+Summary: Estimate the energy consumed by individual appliances from whole-house power meter readings
+Home-page: https://github.com/nilmtk/nilmtk
+Author: nilmtk authors
+Author-email: UNKNOWN
+License: Apache 2.0
+Download-URL: https://github.com/nilmtk/nilmtk/tarball/master#egg=nilmtk-dev
+Description: UNKNOWN
+Keywords: smartmeters power electricity energy analytics redd disaggregation nilm nialm
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache 2.0
+Classifier: Programming Language :: Python
+Classifier: Topic :: Scientific/Engineering :: Mathematics
