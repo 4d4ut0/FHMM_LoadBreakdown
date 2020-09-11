@@ -1,0 +1,16 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorInstalador</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="MyDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="android:textStyle">bold</item>
+        <item name="android:typeface">normal</item>
+    </style>
+
+</resources>

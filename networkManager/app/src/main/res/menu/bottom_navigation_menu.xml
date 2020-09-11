@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_diario"
+        android:title="Registro diario" />
+    <item
+        android:id="@+id/navigation_mensal"
+        android:title="Registro mensal" />
+    <item
+        android:id="@+id/navigation_anual"
+        android:title="Registro anual" />
+
+</menu>

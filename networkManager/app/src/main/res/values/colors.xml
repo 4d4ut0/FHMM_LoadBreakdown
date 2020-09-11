@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFEA00</color>
+    <color name="colorInstalador">#022964</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
+    <color name="colorAccent">#3F51B5</color>
+    <color name="green">#1CD823</color>
+    <color name="lightgray">#ededed</color>
+    <color name="blue">#2f9fe9</color>
+    <color name="pink">#fe104d</color>
+    <color name="amarelo">#DEBA04</color>
+    <color name="azul">#1971CF</color>
+    <color name="roxo">#7817BD</color>
+    <color name="verde">#B4C90E</color>
+
+</resources>

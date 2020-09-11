@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.android\build-cache\b220c09b75ccc511a5d3be544541686b42f7b1ac\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="b62fdc4cfef174c1e456014195c83fa7de7dc041">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\classes_f8a731eecd997a7d862d16959488228f1001ad5a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.android\build-cache\1c2fc5b9cbe46161475876e98f411eefa59bc036\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="233f60a165ae622c8b36731502ebbda0f65e1930">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\classes_15667e20e33cb51e34a7a6113157a2d902c0275c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.android\build-cache\57e915b8ad8f5c74497d10575c6dacdae59afc19\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="508f50705b4fde51a16259f29c854201a3044516">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\classes_3f95e732114fe26e970954275b416f051d5f6dce.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.gradle\caches\modules-2\files-2.1\android.arch.core\common\1.0.0\a2d487452376193fc8c103dd2b9bd5f2b1b44563\common-1.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="a2d487452376193fc8c103dd2b9bd5f2b1b44563">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\common-1.0.0_3d360b48e3b7f44dac42d47411c4afa69a3f7e58.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.gradle\caches\modules-2\files-2.1\com.android.support.constraint\constraint-layout-solver\1.0.2\b9cd8fc6bd15cb915735d34535db30ece0c44603\constraint-layout-solver-1.0.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\constraint-layout-solver-1.0.2_d596b55bc1eccdab5ba7e425216874f5fe96953f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.android\build-cache\a4027eb223db20da762d10dadae6bd5d73111fbc\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="6f4138a4e065826cb044d49faea4cfd7191773d1">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\classes_c9f81035c605380ca86936d33694b7b98e8b888b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.android\build-cache\3bde07e250cbe558e53520752626d260a6f7f016\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="f97cf85b0fe70d37a705111dafa6b1b418ea1650">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\classes_6f4bac2ac07f83219c1ff50544ed4d0045340ecc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.android\build-cache\58885763a5496441fd4f632e9b2e93ebce9cac22\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="40392f30a601db5675cdf18192aab013d6fee6ec">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\classes_38658635d16a5e17d5ec5c6c421e71a9fd46bbb5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.android\build-cache\e45b26d610fe1fc047bcdbfe858c952cb8bfd4c6\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="7efef32744ca4a436492d5cf28c08698cc2af256">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\classes_6f451f85bcfc5dc5558004819779fcab41f52231.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.gradle\caches\modules-2\files-2.1\com.android.support\support-annotations\26.1.0\814258103cf26a15fcc26ecce35f5b7d24b73f8\support-annotations-26.1.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="0814258103cf26a15fcc26ecce35f5b7d24b73f8">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\support-annotations-26.1.0_5c7d7dd70933a15819512291a34cfbdb6638a844.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.android\build-cache\13917a71f7f3c85e27641d614d03b5ee4881d772\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\classes_630f5d7a001185a87d908af75349999c56798a48.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.android\build-cache\fe9dbefd1bad14a773015f73adbea7923f6bf4cf\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="f428e2fbc9ed0b297e3a3f420e51e6982f66822d">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\classes_fd3462e0798193fcae90052ae79c24564e22de12.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.android\build-cache\f8bc22f14b05ed9f2f52f6ac36dda1e1528fc4ee\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\classes_cc3e82d3f6cc5730792214a6f38a0c0fdcdcd12f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.gradle\caches\modules-2\files-2.1\android.arch.lifecycle\common\1.0.0\e414a4cb28434e25c4f6aa71426eb20cf4874ae9\common-1.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="e414a4cb28434e25c4f6aa71426eb20cf4874ae9">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\common-1.0.0_240ceabe3aab787beb61e1d41205940b23e41915.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\usuario\.android\build-cache\7f1a7ae2304c495bc897a5a01c0e96572b6376d5\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="2442771a5590dd4eb4bce00c2e9dca9e22e4c963">
+        <dex dex="C:\Users\usuario\Downloads\http-request-android-app-master\http-request-android-app-master\app\build\intermediates\pre-dexed\debug\classes_bb4be81c23f346a34cc3f95458c93e2155c60cf8.jar" />
+    </item>
+
+</items>

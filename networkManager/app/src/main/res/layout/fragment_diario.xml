@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.DiarioFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="70dp"
+            android:weightSum="6"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/txt_data"
+                android:text="dia/mês/ano"
+                android:textSize="14sp"
+                android:layout_weight="2"/>
+
+            <AutoCompleteTextView
+                android:gravity="center_horizontal"
+                android:id="@+id/txt_id_dv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:hint="Nome do dispositivo"
+                android:inputType="textNoSuggestions"
+                android:textSize="14sp"
+                android:importantForAutofill="no"
+                android:background="@color/white"
+                android:layout_weight="2"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center_horizontal">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/button_generate"
+                    android:text="Gerar"
+                    android:background="@color/colorInstalador"
+                    style="@android:style/Widget.Holo.Light.Button"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <com.jjoe64.graphview.GraphView
+            android:layout_marginHorizontal="10dp"
+            android:paddingHorizontal="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/graph" />
+
+
+
+    </LinearLayout>
+
+</FrameLayout>

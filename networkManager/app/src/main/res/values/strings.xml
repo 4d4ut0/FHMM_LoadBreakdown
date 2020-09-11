@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CEB Network Manager</string>
+
+    <string name="response_status">Response Status</string>
+
+    <string name="new_ssid">Nome da Rede:</string>
+    <string name="new_password">Senha da Rede:</string>
+    <string name="button_loggin">Conectar</string>
+    <!-- Strings used for fragments for navigation -->
+
+
+</resources>
